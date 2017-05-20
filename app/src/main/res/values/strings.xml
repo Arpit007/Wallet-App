@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Wallet</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="WaitMessage">Please Wait</string>
+    <string name="Network.Success">Success</string>
+    <string name="Network.Failure">Failed, Try Again</string>
+    <string name="Network.Timeout">Request Timeout</string>
+    <string name="Network.ServerError">Server Error</string>
+    <string name="Network.NoNetwork">No Connection</string>
+    <string name="Network.OtherError">Error</string>
+    <string name="Network.InternalError">Internal Error</string>
+    <string name="Url">http://192.168.137.1:8081</string>
+    <string name="TransactionUrl">http://192.168.137.1:8081/transact</string>
+</resources>

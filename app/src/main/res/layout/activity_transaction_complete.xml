@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_transaction_complete"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.bhatnagar.arpit.wallet.UI.TransactionComplete">
+
+    <TextView
+        android:padding="10dp"
+        android:textSize="20sp" android:layout_alignParentTop="true"
+        android:background="@color/zxing_possible_result_points"
+        android:text="Payment Successful" android:gravity="center"
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/Content" android:layout_centerInParent="true"
+        android:text="Hi" android:textSize="20sp" android:gravity="center"
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/Done" android:padding="10dp"
+        android:background="@android:color/holo_green_light"
+        android:textSize="25sp" android:gravity="center"
+        android:layout_alignParentBottom="true" android:text="Done"
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+</RelativeLayout>
