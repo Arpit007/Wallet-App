@@ -9,19 +9,22 @@
     tools:context="com.bhatnagar.arpit.wallet.UI.TransactionComplete">
 
     <TextView
-        android:padding="10dp"
-        android:textSize="20sp" android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_alignParentTop="true"
         android:background="@color/zxing_possible_result_points"
-        android:text="Payment Successful" android:gravity="center"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        android:gravity="center" android:padding="10dp"
+        android:text="Payment Successful" android:textSize="20sp"/>
+
     <TextView
-        android:id="@+id/Content" android:layout_centerInParent="true"
-        android:text="Hi" android:textSize="20sp" android:gravity="center"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        android:id="@+id/Content" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Hi" android:textSize="20sp"/>
+
     <TextView
-        android:id="@+id/Done" android:padding="10dp"
-        android:background="@android:color/holo_green_light"
-        android:textSize="25sp" android:gravity="center"
-        android:layout_alignParentBottom="true" android:text="Done"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        android:id="@+id/Done" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" android:background="@android:color/holo_green_light"
+        android:gravity="center" android:padding="10dp"
+        android:text="Done" android:textSize="25sp"/>
 </RelativeLayout>

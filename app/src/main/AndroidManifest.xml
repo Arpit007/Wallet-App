@@ -15,26 +15,37 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.MainActivity"
+        <activity
+            android:name=".UI.MainActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".Util.QRScanner"/>
-        <activity android:name=".UI.MyPhoneNumber">
-        </activity>
-        <activity android:name=".UI.GetAmount">
-        </activity>
-        <activity android:name=".UI.TransactionComplete">
-        </activity>
-        <activity android:name=".UI.Otp">
-        </activity>
-        <activity android:name=".UI.OfflineQR">
-        </activity>
-        <activity android:name=".UI.OfflineQrResponse">
-        </activity>
-        <activity android:name=".UI.ReceivePayment">
-        </activity>
-        <activity android:name=".UI.AddAmount">
-        </activity>
+        <activity
+            android:name=".Util.QRScanner"
+            android:label="Scan QR Code"/>
+        <activity
+            android:name=".UI.MyPhoneNumber"
+            android:label="My QR Code"/>
+        <activity
+            android:name=".UI.GetAmount"
+            android:label="Pay"/>
+        <activity
+            android:name=".UI.TransactionComplete"
+            android:label="Success"/>
+        <activity
+            android:name=".UI.Otp"
+            android:label="Confirmation"/>
+        <activity
+            android:name=".UI.OfflineQR"
+            android:label="Payment"/>
+        <activity
+            android:name=".UI.OfflineQrResponse"
+            android:label="Payment"/>
+        <activity
+            android:name=".UI.ReceivePayment"
+            android:label="Receive"/>
+        <activity
+            android:name=".UI.AddAmount"
+            android:label="Add Amount"/>
         <activity android:name=".UI.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -42,19 +53,22 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".UI.SetNum">
-        </activity>
+        <activity
+            android:name=".UI.SetNum"
+            android:label="Welcome"/>
 
-        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
-                  android:screenOrientation="portrait"
-                  tools:replace="screenOrientation"/>
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation"/>
 
-        <receiver android:name=".Util.Network.NetworkChanged"
+        <receiver
+            android:name=".Util.Network.NetworkChanged"
             android:enabled="true"
             android:exported="true">
 
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
     </application>

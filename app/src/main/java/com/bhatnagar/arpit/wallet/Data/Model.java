@@ -14,14 +14,61 @@ import java.util.Random;
 
 public class Model implements Serializable
 {
-	private String OTP="";
-	private String Vendor="";
-	private String Customer="";
-	private String Amount="";
-	private Long TimeStamp=0l;
+	private String OTP = "";
+	private String Vendor = "";
+	private String Customer = "";
+	private String Amount = "";
+	private Long TimeStamp = 0L;
 
-	private boolean Updated=false;
-	private QrStatus status= QrStatus.Invalid;
+	private boolean Updated = false;
+	private QrStatus status = QrStatus.Invalid;
+
+	public static Model createModel(String object) throws Exception
+	{
+		return createModel(new JSONObject(object));
+	}
+
+	public static Model createModel(JSONObject object) throws Exception
+	{
+
+		Model model = new Model();
+		if (object.has("ID"))
+		{
+			String ID = object.getString("ID");
+			model.Customer = ID.substring(0, 10);
+			model.Vendor = ID.substring(10, 20);
+			model.TimeStamp = Long.parseLong(ID.substring(20));
+		}
+		if (object.has("Amount"))
+		{
+			model.Amount = object.getString("Amount");
+		}
+		if (object.has("OTP"))
+		{
+			model.OTP = object.getString("OTP");
+		}
+		if (object.has("Type"))
+		{
+			model.status = QrStatus.getQrType(object.getString("Type"));
+		}
+		return model;
+	}
+
+	public static Model createModel(String customer, String vendor, String amount, QrStatus status)
+	{
+		Model model = new Model();
+		model.Customer = customer;
+		model.Vendor = vendor;
+		model.Amount = amount;
+		model.status = status;
+		return model;
+	}
+
+	public static Model decrypt(String data) throws Exception
+	{
+		String Temp = Security.decrypt(data);
+		return createModel(Temp);
+	}
 
 	public String getOTP()
 	{
@@ -93,56 +140,23 @@ public class Model implements Serializable
 		this.status = status;
 	}
 
-	public static Model createModel(String object) throws Exception
-	{
-		return createModel(new JSONObject(object));
-	}
-
 	public String getTransactionID()
 	{
-		return Customer+Vendor+TimeStamp;
-	}
-
-	public static Model createModel(JSONObject object) throws Exception
-	{
-
-		Model model=new Model();
-		if(object.has("ID"))
-		{
-			String ID=object.getString("ID");
-			model.Customer=ID.substring(0,10);
-			model.Vendor=ID.substring(10,20);
-			model.TimeStamp=Long.parseLong(ID.substring(20));
-		}
-		if(object.has("Amount"))
-			model.Amount=object.getString("Amount");
-		if(object.has("OTP"))
-			model.OTP=object.getString("OTP");
-		if(object.has("Type"))
-			model.status= QrStatus.getQrType(object.getString("Type"));
-		return model;
-	}
-
-	public static Model createModel(String customer, String vendor, String amount, QrStatus status)
-	{
-		Model model=new Model();
-		model.Customer=customer;
-		model.Vendor=vendor;
-		model.Amount=amount;
-		model.status=status;
-		return model;
+		return Customer + Vendor + TimeStamp;
 	}
 
 	public JSONObject getJSONObject()
 	{
-		JSONObject object=new JSONObject();
+		JSONObject object = new JSONObject();
 		try
 		{
 			object.put("ID", getTransactionID());
-			object.put("Amount",Amount);
-			object.put("Type",status);
-			if(!OTP.isEmpty())
-				object.put("OTP",OTP);
+			object.put("Amount", Amount);
+			object.put("Type", status);
+			if (!OTP.isEmpty())
+			{
+				object.put("OTP", OTP);
+			}
 		}
 		catch (Exception e)
 		{
@@ -156,22 +170,16 @@ public class Model implements Serializable
 		return Security.encrypt(getJSONObject().toString());
 	}
 
-	public static Model decrypt(String data) throws Exception
-	{
-		String Temp=Security.decrypt(data);
-		return createModel(Temp);
-	}
-
 	public void setRandomOTP()
 	{
 		Random random = new Random(new Date().getTime());
-		OTP=Integer.toString(random.nextInt(10000));
+		OTP = Integer.toString(random.nextInt(10000));
 	}
 
 	public void setID(String ID)
 	{
-		Customer=ID.substring(0,10);
-		Vendor=ID.substring(10,20);
-		TimeStamp=Long.parseLong(ID.substring(20));
+		Customer = ID.substring(0, 10);
+		Vendor = ID.substring(10, 20);
+		TimeStamp = Long.parseLong(ID.substring(20));
 	}
 }

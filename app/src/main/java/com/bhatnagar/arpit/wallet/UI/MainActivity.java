@@ -3,28 +3,26 @@ package com.bhatnagar.arpit.wallet.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bhatnagar.arpit.wallet.App;
 import com.bhatnagar.arpit.wallet.Data.Account;
-import com.bhatnagar.arpit.wallet.Data.QrStatus;
 import com.bhatnagar.arpit.wallet.Data.SocketConnection;
 import com.bhatnagar.arpit.wallet.R;
 import com.bhatnagar.arpit.wallet.Util.Permission;
-import com.bhatnagar.arpit.wallet.Util.QRScanner;
 
 
 public class MainActivity extends AppCompatActivity
 {
+	private static final int PermissionRequest = 100;
 	private TextView Amount;
-	private static final int PermissionRequest=100;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity
 
 		SocketConnection.getInstance().initialize();
 
-		SocketConnection.getInstance().listener=new SocketConnection.Listener()
+		SocketConnection.getInstance().listener = new SocketConnection.Listener()
 		{
 			@Override
 			public void Update()
@@ -57,20 +55,22 @@ public class MainActivity extends AppCompatActivity
 			}
 		};
 
-		Amount=(TextView)findViewById(R.id.Amount);
+		Amount = (TextView) findViewById(R.id.Amount);
 
-		((TextView)findViewById(R.id.Number)).setText(Account.getPhoneNumber(this));
+		( (TextView) findViewById(R.id.Number) ).setText(Account.getPhoneNumber(this));
 
-		String[] Permissions=Permission.getUnGrantedPermissions(this);
-		if(Permissions!=null && Permissions.length>0)
-			ActivityCompat.requestPermissions(this, Permissions,PermissionRequest);
+		String[] Permissions = Permission.getUnGrantedPermissions(this);
+		if (Permissions != null && Permissions.length > 0)
+		{
+			ActivityCompat.requestPermissions(this, Permissions, PermissionRequest);
+		}
 
 		findViewById(R.id.MyNumber).setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
 			{
-				Intent intent=new Intent(MainActivity.this, MyPhoneNumber.class);
+				Intent intent = new Intent(MainActivity.this, MyPhoneNumber.class);
 				startActivity(intent);
 			}
 		});
@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Intent intent=new Intent(MainActivity.this, ReceivePayment.class);
-				intent.putExtra("Receive",true);
+				Intent intent = new Intent(MainActivity.this, ReceivePayment.class);
+				intent.putExtra("Receive", true);
 				startActivity(intent);
 			}
 		});
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Intent intent=new Intent(MainActivity.this, GetAmount.class);
+				Intent intent = new Intent(MainActivity.this, GetAmount.class);
 				startActivity(intent);
 			}
 		});
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Intent intent=new Intent(MainActivity.this, AddAmount.class);
+				Intent intent = new Intent(MainActivity.this, AddAmount.class);
 				startActivity(intent);
 			}
 		});
@@ -110,10 +110,10 @@ public class MainActivity extends AppCompatActivity
 		switch (requestCode)
 		{
 			case PermissionRequest:
-				String[] Perms=Permission.getUnGrantedPermissions(this);
-				if(Perms!=null && Perms.length!=0)
+				String[] Perms = Permission.getUnGrantedPermissions(this);
+				if (Perms != null && Perms.length != 0)
 				{
-					Toast.makeText(this,"Requested Permission Not granted, Exiting",Toast.LENGTH_LONG).show();
+					Toast.makeText(this, "Requested Permission Not granted, Exiting", Toast.LENGTH_LONG).show();
 					new Handler().postDelayed(new Runnable()
 					{
 						@Override
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
 						{
 							System.exit(-1);
 						}
-					},2000);
+					}, 2000);
 				}
 
 		}
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onPostResume();
 		SocketConnection.getInstance().reconnect();
-		SharedPreferences preferences=getSharedPreferences("Account", Context.MODE_PRIVATE);
-		Amount.setText(("Balance: "+preferences.getInt("Amount",0)));
+		SharedPreferences preferences = getSharedPreferences("Account", Context.MODE_PRIVATE);
+		Amount.setText(( "Balance: " + preferences.getInt("Amount", 0) ));
 	}
 }

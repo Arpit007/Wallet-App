@@ -3,8 +3,8 @@ package com.bhatnagar.arpit.wallet.UI;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,19 +54,21 @@ public class ReceivePayment extends AppCompatActivity
 
 	public void Scan()
 	{
-		Intent intent=new Intent(ReceivePayment.this, QRScanner.class);
+		Intent intent = new Intent(ReceivePayment.this, QRScanner.class);
 		intent.putExtra("Type", QrStatus.Pending);
-		intent.putExtra("Caption","Hi, Scan QR from Customer");
+		intent.putExtra("Caption", "Hi, Scan QR from Customer");
 		startActivityForResult(intent, QRScanner.SCANNER);
 	}
 
 	void doTransaction()
 	{
-		if(!model.getVendor().equals(Account.getPhoneNumber(this)))
-			Toast.makeText(this,"Invalid QR Code",Toast.LENGTH_LONG).show();
+		if (!model.getVendor().equals(Account.getPhoneNumber(this)))
+		{
+			Toast.makeText(this, "Invalid QR Code", Toast.LENGTH_LONG).show();
+		}
 		else
 		{
-			dialog=new ProgressDialog(ReceivePayment.this);
+			dialog = new ProgressDialog(ReceivePayment.this);
 			dialog.setMessage(getString(R.string.WaitMessage));
 			dialog.show();
 
@@ -77,21 +79,22 @@ public class ReceivePayment extends AppCompatActivity
 				{
 					if (Connectivity.isOnline())
 					{
-						new RequestHandler(ReceivePayment.this,true,RequestHandler.LONG){
+						new RequestHandler(ReceivePayment.this, true, RequestHandler.LONG)
+						{
 							@Override
 							public void body()
 							{
-								StringRequest stringRequest=new StringRequest(Request.Method.POST, getString(R.string.TransactionUrl), new Response.Listener<String>()
+								StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.TransactionUrl), new Response.Listener<String>()
 								{
 									@Override
 									public void onResponse(String response)
 									{
 										try
 										{
-											model=Model.decrypt(response);
-											if(Account.Transact(ReceivePayment.this,model))
+											model = Model.decrypt(response);
+											if (Account.Transact(ReceivePayment.this, model))
 											{
-												setResponse(ResponseCode.Success,model);
+												setResponse(ResponseCode.Success, model);
 											}
 											else
 											{
@@ -116,8 +119,8 @@ public class ReceivePayment extends AppCompatActivity
 									@Override
 									protected Map<String, String> getParams() throws AuthFailureError
 									{
-										HashMap<String,String> map=new HashMap<>();
-										map.put("Data",rawData);
+										HashMap<String, String> map = new HashMap<>();
+										map.put("Data", rawData);
 										return map;
 									}
 								};
@@ -126,7 +129,7 @@ public class ReceivePayment extends AppCompatActivity
 										DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
 										DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-								RequestQueue requestQueue= Volley.newRequestQueue(ReceivePayment.this);
+								RequestQueue requestQueue = Volley.newRequestQueue(ReceivePayment.this);
 								requestQueue.add(stringRequest);
 							}
 
@@ -142,8 +145,8 @@ public class ReceivePayment extends AppCompatActivity
 							{
 								super.onSuccess(response);
 
-								Intent intent=new Intent(ReceivePayment.this,TransactionComplete.class);
-								intent.putExtra("Model",(Model)response);
+								Intent intent = new Intent(ReceivePayment.this, TransactionComplete.class);
+								intent.putExtra("Model", (Model) response);
 								startActivity(intent);
 								finish();
 							}
@@ -155,11 +158,11 @@ public class ReceivePayment extends AppCompatActivity
 						try
 						{
 							model.setRandomOTP();
-							String sms=model.encrypt();
+							String sms = model.encrypt();
 							SMS.sendSMS(Account.ServerPhoneNumber, sms);
 
-							Intent intent=new Intent(ReceivePayment.this,Otp.class);
-							intent.putExtra("Model",model);
+							Intent intent = new Intent(ReceivePayment.this, Otp.class);
+							intent.putExtra("Model", model);
 							startActivity(intent);
 							dialog.dismiss();
 						}
@@ -167,7 +170,7 @@ public class ReceivePayment extends AppCompatActivity
 						{
 							e.printStackTrace();
 							dialog.dismiss();
-							Toast.makeText(ReceivePayment.this,"Failed",Toast.LENGTH_LONG).show();
+							Toast.makeText(ReceivePayment.this, "Failed", Toast.LENGTH_LONG).show();
 						}
 					}
 				}
@@ -192,9 +195,9 @@ public class ReceivePayment extends AppCompatActivity
 		switch (requestCode)
 		{
 			case QRScanner.SCANNER:
-				if(resultCode== Activity.RESULT_OK)
+				if (resultCode == Activity.RESULT_OK)
 				{
-					model=( Model)data.getSerializableExtra("Model");
+					model = (Model) data.getSerializableExtra("Model");
 					doTransaction();
 				}
 				break;

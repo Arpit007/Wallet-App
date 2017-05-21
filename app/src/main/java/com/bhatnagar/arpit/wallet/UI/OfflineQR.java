@@ -2,8 +2,8 @@ package com.bhatnagar.arpit.wallet.UI;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,18 +22,18 @@ public class OfflineQR extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offline_qr);
 
-		model=(Model)getIntent().getSerializableExtra("Model");
+		model = (Model) getIntent().getSerializableExtra("Model");
 
 		try
 		{
 			Bitmap QrCode = QRGenerator.getQRCode(model.encrypt(), QRGenerator.getAppropriateSize(this));
-			ImageView view1=(ImageView)findViewById(R.id.QR);
+			ImageView view1 = (ImageView) findViewById(R.id.QR);
 			view1.setImageBitmap(QrCode);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			Toast.makeText(OfflineQR.this,"Some Error Occurred",Toast.LENGTH_SHORT).show();
+			Toast.makeText(OfflineQR.this, "Some Error Occurred", Toast.LENGTH_SHORT).show();
 			finish();
 		}
 		findViewById(R.id.Next).setOnClickListener(new View.OnClickListener()
@@ -41,8 +41,8 @@ public class OfflineQR extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Intent intent=new Intent(OfflineQR.this,Otp.class);
-				intent.putExtra("Model",model);
+				Intent intent = new Intent(OfflineQR.this, Otp.class);
+				intent.putExtra("Model", model);
 				startActivity(intent);
 			}
 		});

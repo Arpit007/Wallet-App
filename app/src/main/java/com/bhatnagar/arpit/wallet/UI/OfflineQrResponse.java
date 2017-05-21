@@ -2,8 +2,8 @@ package com.bhatnagar.arpit.wallet.UI;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,7 +23,7 @@ public class OfflineQrResponse extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offline_qr_response);
 
-		model=(Model)getIntent().getSerializableExtra("Model");
+		model = (Model) getIntent().getSerializableExtra("Model");
 
 		Scan();
 
@@ -40,28 +40,32 @@ public class OfflineQrResponse extends AppCompatActivity
 
 	public void Scan()
 	{
-		Intent intent=new Intent(this, QRScanner.class);
+		Intent intent = new Intent(this, QRScanner.class);
 		intent.putExtra("Type", QrStatus.Success);
-		intent.putExtra("Caption","Scan Payment Qr Code from Vendor to Complete");
+		intent.putExtra("Caption", "Scan Payment Qr Code from Vendor to Complete");
 		startActivityForResult(intent, QRScanner.SCANNER);
 	}
 
 	void Check(Model scan)
 	{
 		if (!model.getTransactionID().equals(scan.getTransactionID()))
-			Toast.makeText(this,"Invalid Qr Code",Toast.LENGTH_LONG).show();
+		{
+			Toast.makeText(this, "Invalid Qr Code", Toast.LENGTH_LONG).show();
+		}
 		else
 		{
-			if(!scan.getCustomer().equals(Account.getPhoneNumber(this)))
-				Toast.makeText(this,"Invalid Qr Code",Toast.LENGTH_LONG).show();
+			if (!scan.getCustomer().equals(Account.getPhoneNumber(this)))
+			{
+				Toast.makeText(this, "Invalid Qr Code", Toast.LENGTH_LONG).show();
+			}
 			else
 			{
 				try
 				{
-					if (Account.Transact(OfflineQrResponse.this,model))
+					if (Account.Transact(OfflineQrResponse.this, model))
 					{
 						Intent intent = new Intent(OfflineQrResponse.this, TransactionComplete.class);
-						intent.putExtra("Model",model);
+						intent.putExtra("Model", model);
 						startActivity(intent);
 						finish();
 					}
@@ -69,7 +73,7 @@ public class OfflineQrResponse extends AppCompatActivity
 				catch (Exception e)
 				{
 					e.printStackTrace();
-					Toast.makeText(this,"Failed, try Again",Toast.LENGTH_LONG).show();
+					Toast.makeText(this, "Failed, try Again", Toast.LENGTH_LONG).show();
 				}
 			}
 		}
@@ -81,9 +85,9 @@ public class OfflineQrResponse extends AppCompatActivity
 		switch (requestCode)
 		{
 			case QRScanner.SCANNER:
-				if(resultCode== Activity.RESULT_OK)
+				if (resultCode == Activity.RESULT_OK)
 				{
-					Model model=( Model)data.getSerializableExtra("Model");
+					Model model = (Model) data.getSerializableExtra("Model");
 					Check(model);
 				}
 				break;

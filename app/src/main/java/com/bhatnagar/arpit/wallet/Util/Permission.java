@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 public class Permission
 {
-	public static String[] retrievePermissions(Context context) {
+	public static String[] retrievePermissions(Context context)
+	{
 		try
 		{
 			return context
@@ -29,14 +30,16 @@ public class Permission
 
 	public static String[] getUnGrantedPermissions(Context context)
 	{
-		ArrayList<String> UnGranted=new ArrayList<>();
-		String[] Permissions=retrievePermissions(context);
+		ArrayList<String> UnGranted = new ArrayList<>();
+		String[] Permissions = retrievePermissions(context);
 		try
 		{
 			for (String Permission : Permissions)
 			{
 				if (ContextCompat.checkSelfPermission(context, Permission) != PackageManager.PERMISSION_GRANTED)
+				{
 					UnGranted.add(Permission);
+				}
 			}
 			return UnGranted.toArray(new String[0]);
 		}

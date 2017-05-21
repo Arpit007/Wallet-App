@@ -8,24 +8,26 @@
     tools:context="com.bhatnagar.arpit.wallet.UI.MyPhoneNumber">
 
     <TextView
+        android:id="@+id/Number"
+        android:layout_width="match_parent"
+        android:layout_height="70dp" android:layout_alignParentTop="true"
         android:background="@color/zxing_possible_result_points"
         android:gravity="center_horizontal|center_vertical"
-        android:textSize="20sp" android:text="Number"
-        android:id="@+id/Number" android:layout_alignParentTop="true"
-        android:layout_width="match_parent" android:layout_height="70dp"/>
+        android:text="Number" android:textSize="20sp"/>
 
     <ImageView
         android:id="@+id/QR"
-        android:layout_below="@id/Number" android:layout_above="@+id/Next"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_margin="20dp"
         android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_above="@+id/Next"
+        android:layout_below="@id/Number"
+        android:layout_gravity="center_horizontal|center_vertical" android:layout_margin="20dp"
         android:scaleType="center"/>
 
     <TextView
-        android:id="@+id/Next" android:background="@android:color/holo_green_light"
-        android:textSize="30sp" android:gravity="center_horizontal|center_vertical"
-        android:layout_alignParentBottom="true" android:text="Next"
-        android:layout_width="match_parent" android:layout_height="50dp"/>
+        android:id="@+id/Next" android:layout_width="match_parent"
+        android:layout_height="50dp" android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_green_light"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Next" android:textSize="30sp"/>
 
 </RelativeLayout>

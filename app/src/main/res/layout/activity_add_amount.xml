@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bhatnagar.arpit.wallet.UI.AddAmount">
+
     <TextView
+        android:id="@+id/Number"
+        android:layout_width="match_parent"
+        android:layout_height="70dp" android:layout_alignParentTop="true"
         android:background="@color/zxing_possible_result_points"
         android:gravity="center_horizontal|center_vertical"
-        android:textSize="20sp" android:text="Enter Amount"
-        android:id="@+id/Number" android:layout_alignParentTop="true"
-        android:layout_width="match_parent" android:layout_height="70dp"/>
+        android:text="Enter Amount" android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/Amount"
-        android:hint="Amount"
-        android:layout_centerInParent="true" android:inputType="number"
-        android:textAlignment="center"
-        android:layout_margin="20dp" android:maxLength="6" android:maxLines="1"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:scaleType="center"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:hint="Amount" android:inputType="number" android:maxLength="6"
+        android:maxLines="1" android:scaleType="center"
+        android:textAlignment="center"/>
 
     <Button
-        android:id="@+id/Done" android:background="@android:color/holo_green_light"
-        android:textSize="30sp" android:gravity="center_horizontal|center_vertical"
-        android:layout_alignParentBottom="true" android:text="Done"
-        android:layout_width="match_parent" android:layout_height="50dp"/>
+        android:id="@+id/Done" android:layout_width="match_parent"
+        android:layout_height="50dp" android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_green_light"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Done" android:textSize="30sp"/>
 </RelativeLayout>

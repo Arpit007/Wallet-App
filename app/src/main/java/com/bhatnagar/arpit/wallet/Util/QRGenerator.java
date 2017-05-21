@@ -35,9 +35,11 @@ public class QRGenerator
 		int w = result.getWidth();
 		int h = result.getHeight();
 		int[] pixels = new int[w * h];
-		for (int y = 0; y < h; y++) {
+		for (int y = 0; y < h; y++)
+		{
 			int offset = y * w;
-			for (int x = 0; x < w; x++) {
+			for (int x = 0; x < w; x++)
+			{
 				pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
 			}
 		}
@@ -51,6 +53,6 @@ public class QRGenerator
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		DisplayMetrics metrics = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(metrics);
-		return (int)(metrics.widthPixels*0.8);
+		return (int) ( metrics.widthPixels * 0.8 );
 	}
 }

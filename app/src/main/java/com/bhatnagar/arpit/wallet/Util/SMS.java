@@ -15,6 +15,6 @@ public class SMS
 	{
 		SmsManager smsManager = SmsManager.getDefault();
 		smsManager.sendTextMessage(phoneNo, null, msg, null, null);
-		Toast.makeText(App.getInstance().getApplicationContext(), "Message Sent to Server",Toast.LENGTH_LONG).show();
+		Toast.makeText(App.getInstance().getApplicationContext(), "Message Sent to Server", Toast.LENGTH_LONG).show();
 	}
 }

@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
+              android:id="@+id/activity_scanner"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context=".Util.QRScanner"
+              android:orientation="vertical"
               android:weightSum="100"
-              android:id="@+id/activity_scanner">
+              tools:context=".Util.QRScanner">
+
     <TextView
-        android:text="Caption" android:textSize="25sp"
-        android:gravity="center_horizontal|center_vertical" android:id="@+id/Caption"
-        android:layout_weight="15" android:background="@color/zxing_possible_result_points"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <com.journeyapps.barcodescanner.BarcodeView
-        android:layout_margin="10dp"
-        android:layout_weight="85"  android:id="@+id/Scan"
-        android:layout_width="wrap_content" android:layout_height="0dp"/>
+        android:id="@+id/Caption" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_weight="15"
+        android:background="@color/zxing_possible_result_points"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Caption" android:textSize="25sp"/>
+
+    <me.dm7.barcodescanner.zbar.ZBarScannerView
+        android:id="@+id/Scan"
+        android:layout_width="wrap_content" android:layout_height="0dp"
+        android:layout_margin="10dp" android:layout_weight="85"/>
 </LinearLayout>

@@ -8,8 +8,11 @@
 
     <TextView
         android:id="@+id/Scan"
-        android:textSize="20sp" android:gravity="center" android:background="@color/zxing_possible_result_points"
-        android:layout_centerInParent="true" android:text="Click to Scan Payment Qr Code from Vendor to Complete"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/zxing_possible_result_points"
+        android:gravity="center"
+        android:text="Click to Scan Payment Qr Code from Vendor to Complete"
+        android:textSize="20sp"/>
 
 </RelativeLayout>

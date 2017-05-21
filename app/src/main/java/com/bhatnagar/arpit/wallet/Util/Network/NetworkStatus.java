@@ -12,10 +12,14 @@ public enum NetworkStatus
 
 	public static NetworkStatus getStatus(String status)
 	{
-		if(status.equals(Online.toString()))
+		if (status.equals(Online.toString()))
+		{
 			return Online;
-		if(status.equals(Network.toString()))
+		}
+		if (status.equals(Network.toString()))
+		{
 			return Network;
+		}
 		return Offline;
 	}
 }

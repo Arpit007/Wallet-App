@@ -2,8 +2,8 @@ package com.bhatnagar.arpit.wallet.UI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,10 +45,10 @@ public class GetAmount extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Intent intent=new Intent(GetAmount.this, QRScanner.class);
-				intent.putExtra("Caption","Scan Merchant QR Code");
+				Intent intent = new Intent(GetAmount.this, QRScanner.class);
+				intent.putExtra("Caption", "Scan Merchant QR Code");
 				intent.putExtra("Type", QrStatus.PhoneNumber);
-				startActivityForResult(intent,QRScanner.SCANNER);
+				startActivityForResult(intent, QRScanner.SCANNER);
 			}
 		});
 
@@ -57,26 +57,38 @@ public class GetAmount extends AppCompatActivity
 			@Override
 			public void onClick(final View view)
 			{
-				if((( EditText)findViewById(R.id.Number)).getText().toString().length()!=10)
+				String VendorNumber = ( (EditText) findViewById(R.id.Number) ).getText().toString();
+				String Amount = ( (EditText) findViewById(R.id.Amount) ).getText().toString();
+
+				if (VendorNumber.equals(Account.getPhoneNumber(getBaseContext())))
+				{
+					Toast.makeText(getBaseContext(), "Vendor's Number should not be same as Customer's Number", Toast.LENGTH_LONG).show();
+					return;
+				}
+
+				if (VendorNumber.length() != 10)
 				{
 					Toast.makeText(GetAmount.this, "Invalid Number", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(Integer.parseInt((( EditText)findViewById(R.id.Amount)).getText().toString())<=0)
+
+				if (Amount.length() == 0 || Integer.parseInt(Amount) <= 0)
 				{
 					Toast.makeText(GetAmount.this, "Invalid Amount", Toast.LENGTH_SHORT).show();
 					return;
 				}
 
-				view.setEnabled(false);
-				String VendorNumber=(( EditText)findViewById(R.id.Number)).getText().toString();
-				String Amount = (( EditText)findViewById(R.id.Amount)).getText().toString();
+				if (Integer.parseInt(Amount) > getSharedPreferences("Account", MODE_PRIVATE).getInt("Amount", 0))
+				{
+					Toast.makeText(GetAmount.this, "Insufficient Funds", Toast.LENGTH_SHORT).show();
+					return;
+				}
 
-				dialog=new ProgressDialog(GetAmount.this);
+				dialog = new ProgressDialog(GetAmount.this);
 				dialog.setMessage(getString(R.string.WaitMessage));
 				dialog.show();
 
-				final Model model=Model.createModel(Account.getPhoneNumber(GetAmount.this),VendorNumber,Amount,QrStatus.Pending);
+				final Model model = Model.createModel(Account.getPhoneNumber(GetAmount.this), VendorNumber, Amount, QrStatus.Pending);
 				model.setTimeStamp(new Date().getTime());
 				final String data;
 
@@ -87,31 +99,31 @@ public class GetAmount extends AppCompatActivity
 				catch (Exception e)
 				{
 					e.printStackTrace();
-					Toast.makeText(GetAmount.this,"Failed",Toast.LENGTH_LONG).show();
-					view.setEnabled(true);
+					Toast.makeText(GetAmount.this, "Failed", Toast.LENGTH_LONG).show();
 					dialog.dismiss();
 					return;
 				}
 
-				if(Connectivity.isNetworkAvailable(GetAmount.this))
+				if (Connectivity.isNetworkAvailable(GetAmount.this) || Connectivity.isOnline())
 				{
-					if(Connectivity.isOnline())
+					if (Connectivity.isOnline())
 					{
-						new RequestHandler(GetAmount.this,true,RequestHandler.LONG){
+						new RequestHandler(GetAmount.this, true, RequestHandler.LONG)
+						{
 							@Override
 							public void body()
 							{
-								StringRequest stringRequest=new StringRequest(Request.Method.POST, getString(R.string.TransactionUrl), new Response.Listener<String>()
+								StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.TransactionUrl), new Response.Listener<String>()
 								{
 									@Override
 									public void onResponse(String response)
 									{
 										try
 										{
-											Model result=Model.decrypt(response);
-											if(Account.Transact(GetAmount.this,result))
+											Model result = Model.decrypt(response);
+											if (Account.Transact(GetAmount.this, result))
 											{
-												setResponse(ResponseCode.Success,result);
+												setResponse(ResponseCode.Success, result);
 											}
 											else
 											{
@@ -136,8 +148,8 @@ public class GetAmount extends AppCompatActivity
 									@Override
 									protected Map<String, String> getParams() throws AuthFailureError
 									{
-										HashMap<String,String> map= new HashMap<>();
-										map.put("Data",data);
+										HashMap<String, String> map = new HashMap<>();
+										map.put("Data", data);
 										return map;
 									}
 								};
@@ -146,7 +158,7 @@ public class GetAmount extends AppCompatActivity
 										0,
 										DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
 										DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-								RequestQueue requestQueue=Volley.newRequestQueue(GetAmount.this);
+								RequestQueue requestQueue = Volley.newRequestQueue(GetAmount.this);
 								requestQueue.add(stringRequest);
 							}
 
@@ -154,7 +166,6 @@ public class GetAmount extends AppCompatActivity
 							protected void onResponse(ResponseCode code, Object response)
 							{
 								super.onResponse(code, response);
-								view.setEnabled(true);
 								dialog.dismiss();
 							}
 
@@ -163,8 +174,8 @@ public class GetAmount extends AppCompatActivity
 							{
 								super.onSuccess(response);
 
-								Intent intent=new Intent(GetAmount.this,TransactionComplete.class);
-								intent.putExtra("Model",model);
+								Intent intent = new Intent(GetAmount.this, TransactionComplete.class);
+								intent.putExtra("Model", model);
 								startActivity(intent);
 								finish();
 							}
@@ -178,29 +189,27 @@ public class GetAmount extends AppCompatActivity
 							model.setRandomOTP();
 							SMS.sendSMS(Account.ServerPhoneNumber, model.encrypt());
 
-							Intent intent=new Intent(GetAmount.this,Otp.class);
-							intent.putExtra("Model",model);
+							Intent intent = new Intent(GetAmount.this, Otp.class);
+							intent.putExtra("Model", model);
 							startActivity(intent);
 						}
 						catch (Exception e)
 						{
 							e.printStackTrace();
-							Toast.makeText(GetAmount.this,"Failed",Toast.LENGTH_LONG).show();
+							Toast.makeText(GetAmount.this, "Failed", Toast.LENGTH_LONG).show();
 						}
 						finally
 						{
 							dialog.dismiss();
-							view.setEnabled(true);
 						}
 					}
 				}
 				else
 				{
-					view.setEnabled(true);
 					dialog.dismiss();
-					Intent intent=new Intent(GetAmount.this,OfflineQR.class);
+					Intent intent = new Intent(GetAmount.this, OfflineQR.class);
 					model.setRandomOTP();
-					intent.putExtra("Model",model);
+					intent.putExtra("Model", model);
 					startActivity(intent);
 				}
 			}
@@ -214,10 +223,17 @@ public class GetAmount extends AppCompatActivity
 		switch (requestCode)
 		{
 			case QRScanner.SCANNER:
-				if(resultCode==RESULT_OK)
+				if (resultCode == RESULT_OK)
 				{
-					Model model=(Model)data.getSerializableExtra("Model");
-					(( EditText)findViewById(R.id.Number)).setText(model.getVendor());
+					Model model = (Model) data.getSerializableExtra("Model");
+					if (model.getVendor().equals(Account.getPhoneNumber(getBaseContext())))
+					{
+						Toast.makeText(getBaseContext(), "Vendor's Number should not be same as Customer's Number", Toast.LENGTH_LONG).show();
+					}
+					else
+					{
+						( (EditText) findViewById(R.id.Number) ).setText(model.getVendor());
+					}
 				}
 				break;
 		}

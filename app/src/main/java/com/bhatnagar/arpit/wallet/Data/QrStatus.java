@@ -15,12 +15,18 @@ public enum QrStatus implements Serializable
 
 	public static QrStatus getQrType(String type)
 	{
-		if(type.equals(PhoneNumber.toString()))
+		if (type.equals(PhoneNumber.toString()))
+		{
 			return PhoneNumber;
-		if(type.equals(Pending.toString()))
+		}
+		if (type.equals(Pending.toString()))
+		{
 			return Pending;
-		if(type.equals(Success.toString()))
+		}
+		if (type.equals(Success.toString()))
+		{
 			return Success;
+		}
 		return Invalid;
 	}
 }

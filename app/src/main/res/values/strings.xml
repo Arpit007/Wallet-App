@@ -13,4 +13,6 @@
     <string name="Network.InternalError">Internal Error</string>
     <string name="Url">http://192.168.137.1:8081</string>
     <string name="TransactionUrl">http://192.168.137.1:8081/transact</string>
+    <!--<string name="Url">https://stark-wallet.herokuapp.com/</string>
+    <string name="TransactionUrl">https://stark-wallet.herokuapp.com/transact</string>-->
 </resources>

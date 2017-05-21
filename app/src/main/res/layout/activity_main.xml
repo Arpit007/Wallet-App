@@ -13,30 +13,39 @@
 
     <TextView
         android:id="@+id/Number"
-        android:gravity="center" android:textSize="20sp"
-        android:layout_alignParentTop="true" android:text="Number"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" android:gravity="center"
+        android:text="Number" android:textSize="20sp"/>
 
-    <LinearLayout android:orientation="vertical" android:gravity="center"
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_centerInParent="true" android:columnCount="3"
-        android:layout_width="match_parent" android:layout_height="wrap_content">
+        android:gravity="center" android:orientation="vertical">
+
         <Button
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="My QR Code" android:textAllCaps="false" android:id="@+id/MyNumber"/>
+            android:id="@+id/MyNumber" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="My QR Code"
+            android:textAllCaps="false"/>
+
         <Button
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Make Payment" android:textAllCaps="false" android:id="@+id/Pay"/>
+            android:id="@+id/Pay" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Make Payment"
+            android:textAllCaps="false"/>
+
         <Button
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Accept Payment" android:textAllCaps="false" android:id="@+id/Receive"/>
+            android:id="@+id/Receive" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Accept Payment"
+            android:textAllCaps="false"/>
+
         <Button
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Add Amount" android:textAllCaps="false" android:id="@+id/AddAmount"/>
+            android:id="@+id/AddAmount" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Add Amount"
+            android:textAllCaps="false"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/Amount"
-        android:text="Amount" android:gravity="center"
-        android:layout_alignParentBottom="true" android:textSize="20sp"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" android:gravity="center"
+        android:text="Amount" android:textSize="20sp"/>
 </RelativeLayout>

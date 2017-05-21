@@ -2,9 +2,9 @@ package com.bhatnagar.arpit.wallet.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.bhatnagar.arpit.wallet.R;
 
@@ -21,14 +21,19 @@ public class Splash extends AppCompatActivity
 			@Override
 			public void run()
 			{
-				SharedPreferences preferences=getSharedPreferences("Account",MODE_PRIVATE);
-				String Phone=preferences.getString("Phone","");
+				SharedPreferences preferences = getSharedPreferences("Account", MODE_PRIVATE);
+				String Phone = preferences.getString("Phone", "");
 				/*Todo:Replace with digit*/
-				if(Phone.isEmpty())
-					startActivity(new Intent(Splash.this,SetNum.class));
-				else startActivity(new Intent(Splash.this,MainActivity.class));
+				if (Phone.isEmpty())
+				{
+					startActivity(new Intent(Splash.this, SetNum.class));
+				}
+				else
+				{
+					startActivity(new Intent(Splash.this, MainActivity.class));
+				}
 				finish();
 			}
-		},100);
+		}, 100);
 	}
 }

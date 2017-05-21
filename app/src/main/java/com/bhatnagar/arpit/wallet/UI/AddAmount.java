@@ -3,8 +3,8 @@ package com.bhatnagar.arpit.wallet.UI;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,10 +23,7 @@ import com.bhatnagar.arpit.wallet.Data.QrStatus;
 import com.bhatnagar.arpit.wallet.R;
 import com.bhatnagar.arpit.wallet.Util.Network.RequestHandler;
 import com.bhatnagar.arpit.wallet.Util.Network.ResponseCode;
-import com.bhatnagar.arpit.wallet.Util.Network.SSL.ExtHttpClientStack;
-import com.bhatnagar.arpit.wallet.Util.Network.SSL.SslHttpClient;
 
-import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +31,7 @@ import java.util.Map;
 public class AddAmount extends AppCompatActivity
 {
 	private ProgressDialog dialog;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -45,33 +43,34 @@ public class AddAmount extends AppCompatActivity
 			@Override
 			public void onClick(final View view)
 			{
-				EditText text=(( EditText)findViewById(R.id.Amount));
-				if(text.length()<1)
+				EditText text = ( (EditText) findViewById(R.id.Amount) );
+				if (text.length() < 1)
 				{
-					Toast.makeText(AddAmount.this,"Invalid Amount",Toast.LENGTH_SHORT).show();
+					Toast.makeText(AddAmount.this, "Invalid Amount", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				final int Amount=Integer.parseInt(text.getText().toString());
-				if(Amount<=0)
+				final int Amount = Integer.parseInt(text.getText().toString());
+				if (Amount <= 0)
 				{
-					Toast.makeText(AddAmount.this,"Invalid Amount",Toast.LENGTH_SHORT).show();
+					Toast.makeText(AddAmount.this, "Invalid Amount", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				new RequestHandler(getApplicationContext(),true,RequestHandler.LONG){
+				new RequestHandler(getApplicationContext(), true, RequestHandler.LONG)
+				{
 					@Override
 					public void body()
 					{
-						dialog=new ProgressDialog(AddAmount.this);
+						dialog = new ProgressDialog(AddAmount.this);
 						dialog.setMessage("Please Wait, Adding Amount");
 						dialog.show();
 
-						Model model=Model.createModel("0000000000", Account.getPhoneNumber(AddAmount.this),Integer.toString(Amount), QrStatus.Pending);
+						Model model = Model.createModel("0000000000", Account.getPhoneNumber(AddAmount.this), Integer.toString(Amount), QrStatus.Pending);
 						model.setTimeStamp(new Date().getTime());
 
 						try
 						{
-							final String data=model.encrypt();
-							StringRequest request=new StringRequest(Request.Method.POST, getString(R.string.TransactionUrl), new Response.Listener<String>()
+							final String data = model.encrypt();
+							StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.TransactionUrl), new Response.Listener<String>()
 							{
 								@Override
 								public void onResponse(String response)
@@ -79,9 +78,14 @@ public class AddAmount extends AppCompatActivity
 									try
 									{
 										Model result = Model.decrypt(response);
-										if(Account.Transact(AddAmount.this,result))
+										if (Account.Transact(AddAmount.this, result))
+										{
 											setResponse(ResponseCode.Success);
-										else setResponse(ResponseCode.Failed);
+										}
+										else
+										{
+											setResponse(ResponseCode.Failed);
+										}
 									}
 									catch (Exception e)
 									{
@@ -102,8 +106,8 @@ public class AddAmount extends AppCompatActivity
 								@Override
 								protected Map<String, String> getParams() throws AuthFailureError
 								{
-									HashMap<String,String> map = new HashMap<>();
-									map.put("Data",data);
+									HashMap<String, String> map = new HashMap<>();
+									map.put("Data", data);
 									return map;
 								}
 							};
@@ -111,7 +115,7 @@ public class AddAmount extends AppCompatActivity
 									0,
 									DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
 									DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-							RequestQueue queue= Volley.newRequestQueue(AddAmount.this);
+							RequestQueue queue = Volley.newRequestQueue(AddAmount.this);
 							queue.add(request);
 						}
 						catch (Exception e)
@@ -132,11 +136,11 @@ public class AddAmount extends AppCompatActivity
 					protected void onSuccess(Object response)
 					{
 						super.onSuccess(response);
-						SharedPreferences preferences=getBaseContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
-						SharedPreferences.Editor editor=preferences.edit();
-						int oldAmount=preferences.getInt("Amount",0);
-						oldAmount+=Amount;
-						editor.putInt("Amount",oldAmount);
+						SharedPreferences preferences = getBaseContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
+						SharedPreferences.Editor editor = preferences.edit();
+						int oldAmount = preferences.getInt("Amount", 0);
+						oldAmount += Amount;
+						editor.putInt("Amount", oldAmount);
 						editor.apply();
 						finish();
 					}
