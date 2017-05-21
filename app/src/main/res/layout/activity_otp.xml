@@ -12,7 +12,7 @@
         android:layout_height="70dp" android:layout_alignParentTop="true"
         android:background="@color/zxing_possible_result_points"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Enter 4 digit OTP Code" android:textSize="20sp"/>
+        android:text="Enter 4 digit OTP Code for Confirmation" android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/OtpCode"

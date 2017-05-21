@@ -75,7 +75,7 @@ public class ReceivePayment extends AppCompatActivity
 			try
 			{
 				final String rawData = model.encrypt();
-				if (Connectivity.isNetworkAvailable(this))
+				if (Connectivity.isNetworkAvailable(this) || Connectivity.isOnline())
 				{
 					if (Connectivity.isOnline())
 					{
