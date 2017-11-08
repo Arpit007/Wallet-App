@@ -1,16 +1,9 @@
 package com.bhatnagar.arpit.wallet.Data;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
-
 import com.bhatnagar.arpit.wallet.App;
 import com.bhatnagar.arpit.wallet.R;
 import com.bhatnagar.arpit.wallet.Util.Security;
-
-import org.json.JSONObject;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -22,8 +15,8 @@ import io.socket.emitter.Emitter;
 
 public class SocketConnection
 {
+	public static Listener listener;
 	private static SocketConnection socketConnection;
-	public Listener listener;
 	private Socket socket;
 
 	private SocketConnection()
@@ -44,6 +37,12 @@ public class SocketConnection
 	{
 		try
 		{
+			final String Token = FirebaseInstanceId.getInstance().getToken();
+			if (Token == null || Token.isEmpty())
+			{
+				return;
+			}
+
 			socket = IO.socket(App.getInstance().getString(R.string.Url));
 			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener()
 			{
@@ -52,7 +51,7 @@ public class SocketConnection
 				{
 					try
 					{
-						socket.emit("ID", Security.encrypt(Account.getPhoneNumber(App.getInstance())));
+						socket.emit("ID", Security.encrypt(Account.getPhoneNumber(App.getInstance()) + Token));
 					}
 					catch (Exception e)
 					{
@@ -60,68 +59,6 @@ public class SocketConnection
 					}
 				}
 
-			}).on("Update", new Emitter.Listener()
-			{
-
-				@Override
-				public void call(Object... args)
-				{
-					try
-					{
-						String Data = (String) args[0];
-						JSONObject object = new JSONObject(Security.decrypt(Data));
-
-						SharedPreferences preferences = App.getInstance().getSharedPreferences("Account", Context.MODE_PRIVATE);
-						SharedPreferences.Editor editor = preferences.edit();
-						editor.putInt("Amount", object.getInt("Balance"));
-						editor.apply();
-
-						final String Message = object.getString("Message");
-
-						if (listener != null)
-						{
-							listener.Update();
-						}
-
-						new Handler(Looper.getMainLooper())
-								.post(new Runnable()
-								{
-									@Override
-									public void run()
-									{
-										Toast.makeText(App.getInstance(), Message, Toast.LENGTH_LONG).show();
-									}
-								});
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-
-			}).on("Amount", new Emitter.Listener()
-			{
-				@Override
-				public void call(Object... args)
-				{
-					try
-					{
-						String Amount = Security.decrypt((String) args[0]);
-
-						SharedPreferences preferences = App.getInstance().getSharedPreferences("Account", Context.MODE_PRIVATE);
-						SharedPreferences.Editor editor = preferences.edit();
-						editor.putInt("Amount", Integer.parseInt(Amount));
-						editor.apply();
-						if (listener != null)
-						{
-							listener.Update();
-						}
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
 			}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener()
 			{
 

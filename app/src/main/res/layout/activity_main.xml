@@ -41,6 +41,11 @@
             android:id="@+id/AddAmount" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:text="Add Amount"
             android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/Invite" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Invite"
+            android:textAllCaps="false"/>
     </LinearLayout>
 
     <TextView

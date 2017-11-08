@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bhatnagar.arpit.wallet.Data.SocketConnection;
 import com.bhatnagar.arpit.wallet.R;
 
 public class SetNum extends AppCompatActivity
@@ -36,12 +37,11 @@ public class SetNum extends AppCompatActivity
 					SharedPreferences.Editor editor = getSharedPreferences("Account", Context.MODE_PRIVATE).edit();
 					editor.putString("Phone", Num);
 					editor.apply();
-
+					SocketConnection.getInstance().initialize();
 					startActivity(new Intent(SetNum.this, MainActivity.class));
 					finish();
 				}
 			}
 		});
-
 	}
 }

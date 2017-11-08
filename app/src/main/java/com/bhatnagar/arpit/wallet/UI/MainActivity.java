@@ -16,11 +16,14 @@ import com.bhatnagar.arpit.wallet.Data.Account;
 import com.bhatnagar.arpit.wallet.Data.SocketConnection;
 import com.bhatnagar.arpit.wallet.R;
 import com.bhatnagar.arpit.wallet.Util.Permission;
+import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class MainActivity extends AppCompatActivity
 {
 	private static final int PermissionRequest = 100;
+	private static final int REQUEST_INVITE = 234;
 	private TextView Amount;
 
 	@Override
@@ -102,6 +105,18 @@ public class MainActivity extends AppCompatActivity
 				startActivity(intent);
 			}
 		});
+		findViewById(R.id.Invite).setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+						.setMessage(getString(R.string.invitation_message))
+						.build();
+				startActivityForResult(intent, REQUEST_INVITE);
+			}
+		});
+
 	}
 
 	@Override
@@ -134,5 +149,21 @@ public class MainActivity extends AppCompatActivity
 		SocketConnection.getInstance().reconnect();
 		SharedPreferences preferences = getSharedPreferences("Account", Context.MODE_PRIVATE);
 		Amount.setText(( "Balance: " + preferences.getInt("Amount", 0) ));
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_INVITE)
+		{
+			if (resultCode == RESULT_OK)
+			{
+				FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getApplicationContext());
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("UserId", Account.getPhoneNumber(getApplicationContext()));
+				analytics.logEvent("Invite", bundle);
+			}
+		}
 	}
 }

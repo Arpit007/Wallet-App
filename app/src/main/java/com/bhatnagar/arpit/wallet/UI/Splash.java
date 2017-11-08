@@ -5,8 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import com.bhatnagar.arpit.wallet.Data.SocketConnection;
 import com.bhatnagar.arpit.wallet.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Splash extends AppCompatActivity
 {
@@ -30,6 +33,17 @@ public class Splash extends AppCompatActivity
 				}
 				else
 				{
+					FirebaseAuth.getInstance().signInWithCustomToken(Phone);
+
+					try
+					{
+						Toast.makeText(getApplicationContext(), FirebaseAuth.getInstance().getCurrentUser().getToken(true).getResult().getToken(), Toast.LENGTH_LONG);
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+					SocketConnection.getInstance().initialize();
 					startActivity(new Intent(Splash.this, MainActivity.class));
 				}
 				finish();
