@@ -13,8 +13,12 @@
     <string name="Network.InternalError">Internal Error</string>
     <!--<string name="Url">https://e607c6bb.ngrok.io</string>
     <string name="TransactionUrl">https://e607c6bb.ngrok.io/transact</string>-->
-    <string name="Url">https://stark-wallet.herokuapp.com/</string>
-    <string name="TransactionUrl">https://stark-wallet.herokuapp.com/transact</string>
+    <!--<string name="Url">http://192.168.31.220:3000/</string>-->
+    <string name="Url">http://192.168.31.220:3000/</string>
+    <string name="TransactionUrl">http://192.168.31.220:3000/transact</string>
+    <string name="HistoryUrl">http://192.168.31.220:3000/transact/history</string>
+    <!--<string name="Url">https://stark-wallet.herokuapp.com/</string>
+    <string name="TransactionUrl">https://stark-wallet.herokuapp.com/transact</string>-->
     <string name="invitation_title">Join me on Wallet!</string>
     <string name="invitation_message">Hey there, I\'m using Wallet.\nJoin me, its fun!</string>
 </resources>

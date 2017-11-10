@@ -3,7 +3,6 @@ package com.bhatnagar.arpit.wallet.Data;
 import com.bhatnagar.arpit.wallet.App;
 import com.bhatnagar.arpit.wallet.R;
 import com.bhatnagar.arpit.wallet.Util.Security;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -15,7 +14,6 @@ import io.socket.emitter.Emitter;
 
 public class SocketConnection
 {
-	public static Listener listener;
 	private static SocketConnection socketConnection;
 	private Socket socket;
 
@@ -37,12 +35,6 @@ public class SocketConnection
 	{
 		try
 		{
-			final String Token = FirebaseInstanceId.getInstance().getToken();
-			if (Token == null || Token.isEmpty())
-			{
-				return;
-			}
-
 			socket = IO.socket(App.getInstance().getString(R.string.Url));
 			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener()
 			{
@@ -51,22 +43,19 @@ public class SocketConnection
 				{
 					try
 					{
-						socket.emit("ID", Security.encrypt(Account.getPhoneNumber(App.getInstance()) + Token));
+						socket.emit("verify", Security.encrypt(Account.getPhoneNumber(App.getInstance())));
 					}
 					catch (Exception e)
 					{
 						e.printStackTrace();
 					}
 				}
-
 			}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener()
 			{
-
 				@Override
 				public void call(Object... args)
 				{
 				}
-
 			});
 			socket.connect();
 		}
@@ -87,18 +76,19 @@ public class SocketConnection
 		{
 			socket.connect();
 		}
-		try
-		{
-			socket.emit("ID", Security.encrypt(Account.getPhoneNumber(App.getInstance())));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+	}
+
+	public void registerEvent(String Name, final SocketEvent event) {
+		if (socket != null) {
+			socket.on(Name, new Emitter.Listener() {
+				@Override
+				public void call(Object... args) {
+					if (event != null) {
+						event.onEventRaised(socket, args);
+					}
+				}
+			});
 		}
 	}
 
-	public interface Listener
-	{
-		void Update();
-	}
 }

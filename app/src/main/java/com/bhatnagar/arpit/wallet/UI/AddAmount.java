@@ -1,8 +1,6 @@
 package com.bhatnagar.arpit.wallet.UI;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -78,7 +76,7 @@ public class AddAmount extends AppCompatActivity
 									try
 									{
 										Model result = Model.decrypt(response);
-										if (Account.Transact(AddAmount.this, result))
+										if (Account.Transact(AddAmount.this, result, false))
 										{
 											setResponse(ResponseCode.Success);
 										}
@@ -136,12 +134,6 @@ public class AddAmount extends AppCompatActivity
 					protected void onSuccess(Object response)
 					{
 						super.onSuccess(response);
-						SharedPreferences preferences = getBaseContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
-						SharedPreferences.Editor editor = preferences.edit();
-						int oldAmount = preferences.getInt("Amount", 0);
-						oldAmount += Amount;
-						editor.putInt("Amount", oldAmount);
-						editor.apply();
 						finish();
 					}
 				}.start();

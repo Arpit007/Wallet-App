@@ -18,7 +18,6 @@ import com.bhatnagar.arpit.wallet.Util.QRGenerator;
 
 public class MyPhoneNumber extends AppCompatActivity
 {
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -76,5 +75,4 @@ public class MyPhoneNumber extends AppCompatActivity
 			return "";
 		}
 	}
-
 }

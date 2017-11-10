@@ -12,28 +12,22 @@ import android.widget.Toast;
 import com.bhatnagar.arpit.wallet.Data.SocketConnection;
 import com.bhatnagar.arpit.wallet.R;
 
-public class SetNum extends AppCompatActivity
-{
+public class SetNum extends AppCompatActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_num);
 
-		findViewById(R.id.Set).setOnClickListener(new View.OnClickListener()
-		{
+		findViewById(R.id.Set).setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view)
-			{
+			public void onClick(View view) {
 				EditText text = ( (EditText) findViewById(R.id.Num) );
 				String Num = text.getText().toString();
-				if (Num.length() != 10)
-				{
+				if (Num.length() != 10) {
 					Toast.makeText(SetNum.this, "Invalid Number", Toast.LENGTH_LONG).show();
 				}
-				else
-				{
+				else {
 					SharedPreferences.Editor editor = getSharedPreferences("Account", Context.MODE_PRIVATE).edit();
 					editor.putString("Phone", Num);
 					editor.apply();

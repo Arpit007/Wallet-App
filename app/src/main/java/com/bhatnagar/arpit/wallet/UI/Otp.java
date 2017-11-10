@@ -38,7 +38,7 @@ public class Otp extends AppCompatActivity
 					try
 					{
 						model.setStatus(QrStatus.Success);
-						if (Account.Transact(Otp.this, model))
+						if (Account.Transact(Otp.this, model, false))
 						{
 							Intent intent = new Intent(Otp.this, TransactionComplete.class);
 							intent.putExtra("Model", model);

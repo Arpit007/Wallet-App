@@ -43,9 +43,15 @@
             android:textAllCaps="false"/>
 
         <Button
+            android:id="@+id/History" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Transactions"
+            android:textAllCaps="false"/>
+
+        <Button
             android:id="@+id/Invite" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:text="Invite"
             android:textAllCaps="false"/>
+
     </LinearLayout>
 
     <TextView

@@ -121,7 +121,7 @@ public class GetAmount extends AppCompatActivity
 										try
 										{
 											Model result = Model.decrypt(response);
-											if (Account.Transact(GetAmount.this, result))
+											if (Account.Transact(GetAmount.this, result, false))
 											{
 												setResponse(ResponseCode.Success, result);
 											}

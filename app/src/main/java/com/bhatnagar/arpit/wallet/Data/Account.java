@@ -20,7 +20,7 @@ public class Account
 		return preferences.getString("Phone", "");
 	}
 
-	public static boolean Transact(Context context, Model data) throws Exception
+	public static boolean Transact(Context context, Model data, boolean IsSocket) throws Exception
 	{
 		if (data.getCustomer().equals(Account.getPhoneNumber(context)))
 		{
@@ -33,18 +33,13 @@ public class Account
 			}
 			else if (data.getStatus() == QrStatus.Success)
 			{
-				if (!Connectivity.isOnline())
+				if (!Connectivity.isOnline() || IsSocket)
 				{
 					SharedPreferences preferences = context.getSharedPreferences("Account", Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = preferences.edit();
-					int Balance = preferences.getInt("Amount", 0);
-					int amount = Integer.parseInt(data.getAmount());
-					editor.putInt("Amount", Balance - amount);
+					int Balance = Integer.parseInt(data.getCustomerBalance());
+					editor.putInt("Amount", Balance);
 					editor.apply();
-				}
-				else
-				{
-					SocketConnection.getInstance().reconnect();
 				}
 				return true;
 			}
@@ -57,18 +52,13 @@ public class Account
 		{
 			if (data.getStatus() == QrStatus.Success)
 			{
-				if (!Connectivity.isOnline())
+				if (!Connectivity.isOnline() || IsSocket)
 				{
 					SharedPreferences preferences = context.getSharedPreferences("Account", Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = preferences.edit();
-					int Balance = preferences.getInt("Amount", 0);
-					int amount = Integer.parseInt(data.getAmount());
-					editor.putInt("Amount", Balance + amount);
+					int Balance = Integer.parseInt(data.getVendorBalance());
+					editor.putInt("Amount", Balance);
 					editor.apply();
-				}
-				else
-				{
-					SocketConnection.getInstance().reconnect();
 				}
 				return true;
 			}

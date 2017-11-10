@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.bhatnagar.arpit.wallet"
         minSdkVersion 14
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,18 +27,13 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/android-support-v4.jar')
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/khandroid-httpclient-4.2.3.jar')
     compile files('libs/httpcore-4.1.1.jar')
-}
-dependencies {
-    compile 'com.android.support:support-v4:24.+'
-}
-dependencies {
-    compile 'com.android.support.constraint:constraint-layout:+'
 }
 dependencies {
     compile 'com.android.volley:volley:1.0.0'
@@ -52,12 +48,15 @@ dependencies {
 
 
 dependencies {
-    compile 'com.google.firebase:firebase-crash:10.0.1'
-    compile 'com.google.firebase:firebase-core:10.0.1'
-    compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'com.google.firebase:firebase-invites:10.0.1'
 }
 dependencies {
     compile 'com.google.firebase:firebase-messaging:10.0.1'
+}
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
+dependencies {
+    compile 'com.android.support:support-v4:25.+'
 }
 apply plugin: 'com.google.gms.google-services'

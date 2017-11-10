@@ -35,7 +35,6 @@ public class OfflineQrResponse extends AppCompatActivity
 				Scan();
 			}
 		});
-
 	}
 
 	public void Scan()
@@ -62,7 +61,7 @@ public class OfflineQrResponse extends AppCompatActivity
 			{
 				try
 				{
-					if (Account.Transact(OfflineQrResponse.this, model))
+					if (Account.Transact(OfflineQrResponse.this, model, false))
 					{
 						Intent intent = new Intent(OfflineQrResponse.this, TransactionComplete.class);
 						intent.putExtra("Model", model);

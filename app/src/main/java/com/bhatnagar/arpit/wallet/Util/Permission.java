@@ -2,7 +2,6 @@ package com.bhatnagar.arpit.wallet.Util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -36,7 +35,7 @@ public class Permission
 		{
 			for (String Permission : Permissions)
 			{
-				if (ContextCompat.checkSelfPermission(context, Permission) != PackageManager.PERMISSION_GRANTED)
+				if (context.checkCallingOrSelfPermission(Permission) != PackageManager.PERMISSION_GRANTED)
 				{
 					UnGranted.add(Permission);
 				}

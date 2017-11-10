@@ -15,7 +15,7 @@ public abstract class RequestHandler
 	public static final int LONG = Toast.LENGTH_LONG;
 	public static final int SHORT = Toast.LENGTH_SHORT;
 
-	private int DURATION = Toast.LENGTH_SHORT;
+	private int DURATION = SHORT;
 	private boolean showToast = true;
 	private Context context;
 
