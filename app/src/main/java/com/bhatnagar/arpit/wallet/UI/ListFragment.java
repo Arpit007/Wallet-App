@@ -106,9 +106,9 @@ public class ListFragment extends Fragment {
 				Caption.setText("To:");
 				Number.setText(transaction.getVendor());
 			}
-			Amount.setText("Amount: " + transaction.getAmount());
+			Amount.setText("Amount: Rs " + transaction.getAmount());
 			String date = new SimpleDateFormat("h:mm a, d MMM yyyy", Locale.getDefault())
-					.format(Long.parseLong(Long.toString(transaction.getDate()))).replace("AM", "Am").replace("PM", "Pm");
+					.format(Long.parseLong(Long.toString(transaction.getDate()))).replace("AM", "am").replace("PM", "pm");
 			Date.setText("Date: " + date);
 			return view;
 		}

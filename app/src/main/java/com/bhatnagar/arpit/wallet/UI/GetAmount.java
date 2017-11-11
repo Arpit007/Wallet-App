@@ -104,9 +104,9 @@ public class GetAmount extends AppCompatActivity
 					return;
 				}
 
-				if (Connectivity.isNetworkAvailable(GetAmount.this) || Connectivity.isOnline())
+				if (Connectivity.isNetworkAvailable(GetAmount.this) || Connectivity.isOnline(getBaseContext()))
 				{
-					if (Connectivity.isOnline())
+					if (Connectivity.isOnline(getBaseContext()))
 					{
 						new RequestHandler(GetAmount.this, true, RequestHandler.LONG)
 						{

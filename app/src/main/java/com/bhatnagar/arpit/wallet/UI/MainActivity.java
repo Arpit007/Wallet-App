@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,8 @@ import com.bhatnagar.arpit.wallet.Data.SocketRegister;
 import com.bhatnagar.arpit.wallet.R;
 import com.bhatnagar.arpit.wallet.Util.Permission;
 import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
 
 import io.socket.client.Socket;
 
@@ -26,14 +30,43 @@ import io.socket.client.Socket;
 public class MainActivity extends AppCompatActivity {
 	private static final int PermissionRequest = 100;
 	private static final int REQUEST_INVITE = 234;
-	private TextView Amount;
+	private TextView Amount, Connectivity;
+	private FirebaseAnalytics mFirebaseAnalytics;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+		Connectivity = (TextView) findViewById(R.id.Connectivity);
+
 		SocketConnection.getInstance().reconnect();
+
+		SocketConnection.getInstance().setOnConnectListener(new SocketEvent() {
+			@Override
+			public void onEventRaised(Socket socket, Object[] Data) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Connectivity.setText("Connected");
+					}
+				});
+			}
+		});
+
+		SocketConnection.getInstance().setOnDisconnectListener(new SocketEvent() {
+			@Override
+			public void onEventRaised(Socket socket, Object[] Data) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Connectivity.setText("Disconnected");
+					}
+				});
+			}
+		});
 
 		SocketRegister.getInstance().setReflect(new SocketEvent() {
 			@Override
@@ -108,6 +141,31 @@ public class MainActivity extends AppCompatActivity {
 				startActivityForResult(intent, REQUEST_INVITE);
 			}
 		});
+
+
+		if (SocketConnection.getInstance().isConnected()) {
+			Connectivity.setText("Connected");
+		}
+		else {
+			Connectivity.setText("Disconnected");
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.settings, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.Logout) {
+			FirebaseAuth.getInstance().signOut();
+			getSharedPreferences("Account", MODE_PRIVATE).edit().clear().apply();
+			startActivity(new Intent(MainActivity.this, SetNum.class));
+			finish();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -140,8 +198,14 @@ public class MainActivity extends AppCompatActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_INVITE) {
 			if (resultCode == RESULT_OK) {
-				Bundle bundle = new Bundle();
-				bundle.putSerializable("UserId", Account.getPhoneNumber(getApplicationContext()));
+				String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+				int Count = ( ids != null ) ? ids.length : 0;
+				if (Count > 0) {
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("UserId", Account.getPhoneNumber(getApplicationContext()));
+					bundle.putInt(FirebaseAnalytics.Param.QUANTITY, Count);
+					mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
+				}
 			}
 		}
 	}

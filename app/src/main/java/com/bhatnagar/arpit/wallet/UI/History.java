@@ -56,7 +56,7 @@ public class History extends AppCompatActivity {
 	}
 
 	public void fetch() {
-		if (Connectivity.isOnline()) {
+		if (Connectivity.isOnline(getBaseContext())) {
 			new RequestHandler(History.this, true, RequestHandler.LONG) {
 				@Override
 				public void body() {
@@ -72,11 +72,11 @@ public class History extends AppCompatActivity {
 								JSONArray debitArray = object.getJSONArray("debit");
 
 								for (int x = 0; x < creditArray.length(); x++) {
-									Credit.add(Transaction.parse(creditArray.getJSONObject(x)));
+									Credit.add(0, Transaction.parse(creditArray.getJSONObject(x)));
 								}
 
 								for (int x = 0; x < debitArray.length(); x++) {
-									Debit.add(Transaction.parse(debitArray.getJSONObject(x)));
+									Debit.add(0, Transaction.parse(debitArray.getJSONObject(x)));
 								}
 								adapter.fragments.get(0).setModels(Credit);
 								adapter.fragments.get(1).setModels(Debit);
@@ -123,7 +123,6 @@ public class History extends AppCompatActivity {
 
 				@Override
 				protected void onSuccess(Object response) {
-					super.onSuccess(response);
 				}
 			}.start();
 		}

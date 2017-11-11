@@ -140,7 +140,7 @@ public class Model implements Serializable {
 		try {
 			object.put("i", getTransactionID());
 			object.put("a", Amount);
-			object.put("tp", status);
+			object.put("s", status);
 			object.put("cb", CustomerBalance);
 			object.put("vb", VendorBalance);
 			if (!OTP.isEmpty()) {

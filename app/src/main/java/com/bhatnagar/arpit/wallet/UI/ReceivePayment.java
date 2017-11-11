@@ -66,8 +66,8 @@ public class ReceivePayment extends AppCompatActivity {
 
 			try {
 				final String rawData = model.encrypt();
-				if (Connectivity.isNetworkAvailable(this) || Connectivity.isOnline()) {
-					if (Connectivity.isOnline()) {
+				if (Connectivity.isNetworkAvailable(this) || Connectivity.isOnline(getBaseContext())) {
+					if (Connectivity.isOnline(getBaseContext())) {
 						new RequestHandler(ReceivePayment.this, true, RequestHandler.LONG) {
 							@Override
 							public void body() {

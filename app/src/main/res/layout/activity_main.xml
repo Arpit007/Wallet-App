@@ -52,6 +52,11 @@
             android:layout_height="wrap_content" android:text="Invite"
             android:textAllCaps="false"/>
 
+        <TextView
+            android:id="@+id/Connectivity" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" android:text="Disconnected"/>
+
     </LinearLayout>
 
     <TextView

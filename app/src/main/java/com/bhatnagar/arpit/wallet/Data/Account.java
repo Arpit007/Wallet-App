@@ -33,12 +33,17 @@ public class Account
 			}
 			else if (data.getStatus() == QrStatus.Success)
 			{
-				if (!Connectivity.isOnline() || IsSocket)
+				if (!Connectivity.isOnline(context) || IsSocket)
 				{
 					SharedPreferences preferences = context.getSharedPreferences("Account", Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = preferences.edit();
-					int Balance = Integer.parseInt(data.getCustomerBalance());
-					editor.putInt("Amount", Balance);
+					int Balance = preferences.getInt("Amount", 0);
+					if (data.getCustomerBalance().isEmpty()) {
+						editor.putInt("Amount", Balance - Integer.parseInt(data.getAmount()));
+					}
+					else {
+						editor.putInt("Amount", Integer.parseInt(data.getCustomerBalance()));
+					}
 					editor.apply();
 				}
 				return true;
@@ -52,7 +57,7 @@ public class Account
 		{
 			if (data.getStatus() == QrStatus.Success)
 			{
-				if (!Connectivity.isOnline() || IsSocket)
+				if (!Connectivity.isOnline(context) || IsSocket)
 				{
 					SharedPreferences preferences = context.getSharedPreferences("Account", Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = preferences.edit();

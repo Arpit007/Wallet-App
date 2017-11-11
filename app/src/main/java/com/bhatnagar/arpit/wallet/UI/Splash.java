@@ -21,7 +21,6 @@ public class Splash extends AppCompatActivity {
 			public void run() {
 				SharedPreferences preferences = getSharedPreferences("Account", MODE_PRIVATE);
 				String Phone = preferences.getString("Phone", "");
-				/*Todo:Replace with digit*/
 				if (Phone.isEmpty()) {
 					startActivity(new Intent(Splash.this, SetNum.class));
 				}

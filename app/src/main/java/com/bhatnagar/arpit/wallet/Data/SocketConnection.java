@@ -16,6 +16,8 @@ public class SocketConnection
 {
 	private static SocketConnection socketConnection;
 	private Socket socket;
+	private SocketEvent Connect = null;
+	private SocketEvent Disconnect = null;
 
 	private SocketConnection()
 	{
@@ -43,6 +45,9 @@ public class SocketConnection
 				{
 					try
 					{
+						if (Connect != null) {
+							Connect.onEventRaised(socket, null);
+						}
 						socket.emit("verify", Security.encrypt(Account.getPhoneNumber(App.getInstance())));
 					}
 					catch (Exception e)
@@ -55,6 +60,9 @@ public class SocketConnection
 				@Override
 				public void call(Object... args)
 				{
+					if (Disconnect != null) {
+						Disconnect.onEventRaised(socket, null);
+					}
 				}
 			});
 			socket.connect();
@@ -91,4 +99,15 @@ public class SocketConnection
 		}
 	}
 
+	public void setOnConnectListener(SocketEvent event) {
+		Connect = event;
+	}
+
+	public void setOnDisconnectListener(SocketEvent event) {
+		Disconnect = event;
+	}
+
+	public boolean isConnected() {
+		return socket.connected();
+	}
 }
